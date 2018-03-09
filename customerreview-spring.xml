@@ -39,4 +39,11 @@
 		<property name="searchRestrictionService" ref="searchRestrictionService"/>
 		<property name="configurationService" ref="configurationService"/>
 	</bean>
+
+	<!-- exercise service -->
+	<alias alias="exerciseService" name="defaultExerciseService"/>
+	<bean id="defaultExerciseService" class="exercise.DefaultExerciseService" scope="tenant">
+		<property name="customerReviewService" ref="customerReviewService"/>
+	</bean>
+
 </beans>
