@@ -41,9 +41,19 @@
 	</bean>
 
 	<!-- exercise service -->
-	<alias alias="exerciseService" name="defaultExerciseService"/>
-	<bean id="defaultExerciseService" class="exercise.DefaultExerciseService" scope="tenant">
-		<property name="customerReviewService" ref="customerReviewService"/>
+	<bean id="exerciseCustomerReviewService" class="de.hybris.platform.customerreview.impl.ExerciseCustomerReviewService" parent="customerReviewService" scope="tenant">
+
 	</bean>
 
+	<!-- aop:config -->
+	<bean id="customerReviewServiceAOP" class="de.hybris.platform.customerreview.impl.CustomerReviewServiceAop">
+		<property name="fileName" value="classpath:curesWords.txt"></property>
+	</bean>
+	<aop:config>
+		<aop:aspect ref="customerReviewServiceAOP" >
+		<aop:pointcut id="pointCutBefore"
+							  expression="execution(* de.hybris.platform.customerreview.impl.DefaultCustomerReviewService.createCustomerReview(..))" />
+		<aop:before method="beforeCreateReview" pointcut-ref="pointCutBefore"/>
+		</aop:aspect>
+	</aop:config>
 </beans>
